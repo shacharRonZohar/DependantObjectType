@@ -8,6 +8,15 @@ export type BooleanIndex = {
   [key: string]: boolean
 }
 
+// This type is extracted straight from the typescript handbook, see https://www.typescriptlang.org/play?ts=4.1.0-dev.20201028#example/string-manipulation-with-template-literals
+export type Split<S extends string, D extends string> = string extends S
+  ? string[]
+  : S extends ''
+  ? []
+  : S extends `${infer T}${D}${infer U}`
+  ? [T, ...Split<U, D>]
+  : [S]
+
 // This type is used to check if a string starts with another string
 export type HasPrefix<S, P extends string> = S extends `${P}${string}`
   ? true

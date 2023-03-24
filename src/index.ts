@@ -1,6 +1,4 @@
-#!/usr/bin/env ts-node-esm
-
-import type { CheckValue, AnyIndex, RemoveFromStart } from './util'
+import type { CheckValue, AnyIndex, RemoveFromStart } from '../src/util'
 
 // DOSEN'T WORK
 // type DependantObj<T, KM extends AnyIndex> = {
@@ -11,7 +9,7 @@ import type { CheckValue, AnyIndex, RemoveFromStart } from './util'
 //     true
 //   >
 
-type DependantObj<T, KM extends AnyIndex> = {
+export type DependantObj<T, KM extends AnyIndex> = {
   // [Key in keyof T as RemoveFromStart<Key, 'is'> ]-?: T[Key] extends true
   //   ? KM[RemoveFromStart<Key, 'is'>]
   //   : never
@@ -24,17 +22,17 @@ type DependantObj<T, KM extends AnyIndex> = {
   >]-?: CheckValue<T[Key], true, KM[RemoveFromStart<Key, 'is'>], never>
 }
 
-interface TestKeyMap extends AnyIndex {
-  state: 'pinia' | 'vuex'
-  syntax: 'options' | 'composition'
-}
+// interface TestKeyMap extends AnyIndex {
+//   state: 'pinia' | 'vuex'
+//   syntax: 'options' | 'composition'
+// }
 
-const obj1 = {
-  isState: true,
-  isSyntax: false,
-} as const
+// const obj1 = {
+//   isState: true,
+//   isSyntax: false,
+// } as const
 
-const obj = {
-  state: 'pinia',
-  // syntax: 'options',
-} satisfies DependantObj<typeof obj1, TestKeyMap>
+// const obj = {
+//   state: 'pinia',
+//   // syntax: 'options',
+// } satisfies DependantObj<typeof obj1, TestKeyMap>
