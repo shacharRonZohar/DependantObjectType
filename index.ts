@@ -1,38 +1,40 @@
 #!/usr/bin/env ts-node-esm
 
-type BooleanIndex = {
-  [key: string]: boolean
+import type { CheckValue, AnyIndex, RemoveFromStart } from './util'
+
+// DOSEN'T WORK
+// type DependantObj<T, KM extends AnyIndex> = {
+//   [Key in keyof T as RemoveFromStart<Key, 'is'>]-?: CheckKey<
+//     T[Key],
+//     KM[RemoveFromStart<Key, 'is'>],
+//     boolean,
+//     true
+//   >
+
+type DependantObj<T, KM extends AnyIndex> = {
+  // [Key in keyof T as RemoveFromStart<Key, 'is'> ]-?: T[Key] extends true
+  //   ? KM[RemoveFromStart<Key, 'is'>]
+  //   : never
+
+  [Key in keyof T as CheckValue<
+    T[Key],
+    true,
+    RemoveFromStart<Key, 'is'>,
+    never
+  >]-?: CheckValue<T[Key], true, KM[RemoveFromStart<Key, 'is'>], never>
 }
 
-interface AnyIndex {
-  [key: string | number | symbol]: any
+interface TestKeyMap extends AnyIndex {
+  state: 'pinia' | 'vuex'
+  syntax: 'options' | 'composition'
 }
 
-type RemoveFromStart<
-  S extends string,
-  P extends string
-> = S extends `${P}${infer T}` ? Uncapitalize<T> : S
+const obj1 = {
+  isState: true,
+  isSyntax: false,
+} as const
 
-// type test = RemoveFromStart<'isState', 'is'>
-
-// TODO: Figure out why Key is defined as string | number | symbol here, even though it works
-type DependantObj<T extends BooleanIndex, KeyMap extends AnyIndex> = {
-  [Key in keyof T as RemoveFromStart<Key, 'is'>]-?: T[Key] extends true
-    ? KeyMap[RemoveFromStart<Key, 'is'>]
-    : never
-}
-
-// interface TestKeyMap extends AnyIndex {
-//   state: 'pinia' | 'vuex'
-//   syntax: 'options' | 'composition'
-// }
-
-// const obj1 = {
-//   isState: true,
-//   isSyntax: true,
-// } as const
-
-// const obj = {
-//   state: 'pinia',
-//   syntax: 'options',
-// } satisfies DependantObj<typeof obj1, TestKeyMap>
+const obj = {
+  state: 'pinia',
+  // syntax: 'options',
+} satisfies DependantObj<typeof obj1, TestKeyMap>
