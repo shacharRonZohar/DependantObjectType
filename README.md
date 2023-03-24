@@ -67,19 +67,20 @@ type ResType = {
 
 The same ResType type will be generated for the following testMap:
 
-````typescript
+```typescript
 const testMapSame = {
-  foo:true,
-  bar:false
+  foo: true,
+  bar: false,
 }
 ```
 
 Then we can define the actual constrained object, here are several examples of expected outcomes:
+
 ```typescript
 const obj1 = {
   foo: 'fai',
   bar: 'bir', // will give TS error -  Object literal may only specify known properties,
-              // and 'syntax' does not exist in type DependantObj<typeof testMap1, TestKeyMap>
+  // and 'syntax' does not exist in type DependantObj<typeof testMap1, TestKeyMap>
 } satisfies DependantObj<typeof testMap1, TestKeyMap>
 
 const testMap2 = {
@@ -88,10 +89,10 @@ const testMap2 = {
 } as const
 
 const obj2 = {
-    foo: 'hi', // will give TS error - Type '"hi"' is not assignable to type '"fai" | "fom"'.
+  foo: 'hi', // will give TS error - Type '"hi"' is not assignable to type '"fai" | "fom"'.
 } satisfies DependantObj<typeof testMap2, TestKeyMap> // will also give TS error - Property 'bar' is missing in type '{ foo: "fai"; }',
-                                                      // but required in type DependantObj<typeof testMap2, TestKeyMap>
-````
+// but required in type DependantObj<typeof testMap2, TestKeyMap>
+```
 
 ## Authors
 
