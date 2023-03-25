@@ -28,12 +28,13 @@ export type RemoveFromStart<S, P extends string> = S extends string
     : S
   : never
 
-export type ExtractFromArr<T> = T extends (infer U)[]
-  ? U extends (infer V)[]
-    ? ExtractFromArr<V>
+export type ExtractFromArr<T> = DeepWriteable<T> extends (infer U)[]
+  ? U extends any[]
+    ? ExtractFromArr<U>
     : U
   : T
 
+export type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> }
 // TODO: Find better name
 // This type is used to check if a value extends to another value, if it is, return the true return value, otherwise return the false return value, which is null by default
 export type CheckValue<
