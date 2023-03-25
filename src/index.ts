@@ -1,4 +1,9 @@
-import type { CheckValue, AnyIndex, RemoveFromStart } from '../src/util'
+import type {
+  CheckValue,
+  AnyIndex,
+  RemoveFromStart,
+  ExtractFromArr,
+} from '../src/util'
 
 export type DependantObj<T, KM extends AnyIndex> = {
   [Key in keyof T as CheckValue<
@@ -6,5 +11,10 @@ export type DependantObj<T, KM extends AnyIndex> = {
     true,
     RemoveFromStart<Key, 'is'>,
     never
-  >]-?: CheckValue<T[Key], true, KM[RemoveFromStart<Key, 'is'>], never>
+  >]-?: CheckValue<
+    T[Key],
+    true,
+    ExtractFromArr<KM[RemoveFromStart<Key, 'is'>]>,
+    never
+  >
 }
