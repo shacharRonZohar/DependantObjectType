@@ -8,6 +8,12 @@ Currently the type only supports boolean => any dependancies, but I plan to supp
 
 Install dependant-object-keys:
 
+- with pnpm
+
+```bash
+  pnpm install dependant-object-keys
+```
+
 - with npm
 
 ```bash
